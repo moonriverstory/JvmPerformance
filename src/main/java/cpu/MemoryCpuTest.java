@@ -1,12 +1,14 @@
 package cpu;
 
+/**
+ * 占用cpu测试程序
+ */
 public class MemoryCpuTest {
 
     public static void main(String[] args) throws InterruptedException {
 
         cpuFix();
     }
-
 
     /**
      * cpu 运行固定百分比
