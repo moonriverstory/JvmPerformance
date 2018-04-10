@@ -1,14 +1,14 @@
 package heap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 
 public class JavaHeapTest {
 
     public final static int OUT_OF_MEMORY = 200000000;
 
-    private final Logger LOG = LoggerFactory.getLogger(JavaHeapTest.class);
+    //private final Logger LOG = LoggerFactory.getLogger(JavaHeapTest.class);
 
     private String oom;
 
@@ -26,7 +26,7 @@ public class JavaHeapTest {
                 tempOOM.append("a");
             } catch (OutOfMemoryError e) {
                 e.printStackTrace();
-                LOG.error("OutOfMemoryError! ", e);
+                //LOG.error("OutOfMemoryError! ", e);
                 break;
             }
         }

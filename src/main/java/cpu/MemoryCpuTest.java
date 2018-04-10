@@ -16,10 +16,10 @@ public class MemoryCpuTest {
      * @throws InterruptedException
      */
     public static void cpuFix() throws InterruptedException {
-        // 80%的占有率
-        int busyTime = 8;
-        // 20%的占有率
-        int idelTime = 2;
+        // 680%的占有率
+        int busyTime = 6;
+        // 40%的空闲率
+        int idelTime = 4;
         // 开始时间
         long startTime = 0;
         while (true) {
