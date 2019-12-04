@@ -1,44 +1,54 @@
 package memory.heap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MemoryUsedTest {
 
-    public final static int ONE_M_MEMORY = 1024*1024*1024/2;//一个char字符占用2个字节
+    public final static int ONE_M_MEMORY = 1024 * 1024;
 
+    private final static String ONE_M_STRING;
 
-    private String oom;
+    private static List<String> HOLD_MEM;
 
-    private int length;
-
-    StringBuffer holdMemory = new StringBuffer();
-
-    public MemoryUsedTest(int leng) {
-        this.length = leng;
-
-        int i = 0;
-        while (i < leng) {
-            i++;
+    static{
+        StringBuilder oneMBuf = new StringBuilder(ONE_M_MEMORY);
+        for (int i = 0; i < ONE_M_MEMORY; i++) {
             try {
-                holdMemory.append("a");
+                oneMBuf.append("a");
+            } catch (OutOfMemoryError e) {
+                System.out.println("init one mb OutOfMemoryError : i=" + i);
+                e.printStackTrace();
+                break;
+            }
+        }
+        ONE_M_STRING = oneMBuf.toString();
+    }
+
+    public MemoryUsedTest(int size) {
+        System.out.println("set list size : " + size);
+        HOLD_MEM = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            try {
+                HOLD_MEM.add(ONE_M_STRING);
             } catch (OutOfMemoryError e) {
                 e.printStackTrace();
                 break;
             }
         }
-        this.oom = holdMemory.toString();
-
     }
 
-    public String getOom() {
-        return oom;
+    public int getMemorySize() {
+        return HOLD_MEM.size();
     }
 
     public static void main(String[] args) {
-        MemoryUsedTest javaHeapTest = new MemoryUsedTest(ONE_M_MEMORY*150);
-        System.out.println(javaHeapTest.getOom().length());
-        while (true){
+        MemoryUsedTest javaHeapTest = new MemoryUsedTest(150);
+        System.out.println("Hold MB: " + javaHeapTest.getMemorySize());
+        while (true) {
             System.out.println("sleeping...");
             try {
-                Thread.sleep(1000*200);
+                Thread.sleep(1000 * 200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
