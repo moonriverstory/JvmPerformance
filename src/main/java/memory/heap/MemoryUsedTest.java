@@ -1,4 +1,4 @@
-package heap;
+package memory.heap;
 
 public class MemoryUsedTest {
 

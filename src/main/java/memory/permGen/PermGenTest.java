@@ -1,4 +1,4 @@
-package permGen;
+package memory.permGen;
 
 import java.io.File;
 import java.lang.reflect.Method;

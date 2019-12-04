@@ -3,7 +3,7 @@ package cpu;
 /**
  * 占用cpu测试程序
  */
-public class MemoryCpuTest {
+public class CpuOccupyTest {
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -16,7 +16,7 @@ public class MemoryCpuTest {
      * @throws InterruptedException
      */
     public static void cpuFix() throws InterruptedException {
-        // 680%的占有率
+        // 60%的占有率
         int busyTime = 6;
         // 40%的空闲率
         int idelTime = 4;
