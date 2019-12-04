@@ -2,7 +2,7 @@ package memory.heap;
 
 public class MemoryUsedTest {
 
-    public final static int HOLD_MEMORY = 20000000;
+    public final static int ONE_M_MEMORY = 1024*1024*1024/2;//一个char字符占用2个字节
 
 
     private String oom;
@@ -33,7 +33,7 @@ public class MemoryUsedTest {
     }
 
     public static void main(String[] args) {
-        MemoryUsedTest javaHeapTest = new MemoryUsedTest(HOLD_MEMORY);
+        MemoryUsedTest javaHeapTest = new MemoryUsedTest(ONE_M_MEMORY*150);
         System.out.println(javaHeapTest.getOom().length());
         while (true){
             System.out.println("sleeping...");
