@@ -1,61 +1,85 @@
 package memory.heap;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MemoryUsedTest {
 
-    public final static int ONE_M_MEMORY = 1024 * 1024;
-
-    private final static String ONE_M_STRING;
+    //java中一个char占用2个字节
+    public final static int ONE_M_MEMORY = 1024 * 1024/2;
 
     private static List<String> HOLD_MEM;
 
-    static{
-        StringBuilder oneMBuf = new StringBuilder(ONE_M_MEMORY);
-        for (int i = 0; i < ONE_M_MEMORY; i++) {
+    private static String ONE_MB;
+
+    public MemoryUsedTest(int size, boolean unique) {
+        System.out.println("set list size : " + size);
+        if (!unique) {
+            initOneMB();
+        }
+        HOLD_MEM = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
             try {
-                oneMBuf.append("a");
+                if (unique) {
+                    HOLD_MEM.add(getUUIDOneMB());
+                } else {
+                    HOLD_MEM.add(ONE_MB);
+                }
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+                break;
+            }
+        }
+    }
+
+    private void initOneMB() {
+        if (ONE_MB == null) {
+            StringBuilder oneMBuf = new StringBuilder(ONE_M_MEMORY);
+            for (int i = 0; i < ONE_M_MEMORY; i++) {
+                try {
+                    oneMBuf.append("a");
+                } catch (OutOfMemoryError e) {
+                    System.out.println("init one mb OutOfMemoryError : i=" + i);
+                    e.printStackTrace();
+                    break;
+                }
+            }
+            ONE_MB = oneMBuf.toString();
+        }
+    }
+
+    private String getUUIDOneMB() {
+        StringBuilder oneMBuf = new StringBuilder(ONE_M_MEMORY);
+        int loop = ONE_M_MEMORY / 32;
+        String uuid = get32UUIDStr();
+        for (int i = 0; i < loop; i++) {
+            try {
+                oneMBuf.append(uuid);
             } catch (OutOfMemoryError e) {
                 System.out.println("init one mb OutOfMemoryError : i=" + i);
                 e.printStackTrace();
                 break;
             }
         }
-        ONE_M_STRING = oneMBuf.toString();
+        return oneMBuf.toString();
     }
 
-    public MemoryUsedTest(int size) {
-        System.out.println("set list size : " + size);
-        HOLD_MEM = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            try {
-                HOLD_MEM.add(ONE_M_STRING);
-            } catch (OutOfMemoryError e) {
-                e.printStackTrace();
-                break;
-            }
-        }
+    /**
+     * 生成32位uuid
+     */
+    public static String get32UUIDStr() {
+        return UUID.randomUUID().toString().replace("-", "").toLowerCase();
     }
 
     public int getMemorySize() {
         return HOLD_MEM.size();
     }
 
-    public static void main(String[] args) {
-        MemoryUsedTest javaHeapTest = new MemoryUsedTest(150);
-        System.out.println("Hold MB: " + javaHeapTest.getMemorySize());
-
-        Runtime run = Runtime.getRuntime();
-        long max = run.maxMemory();
-        long total = run.totalMemory();
-        long free = run.freeMemory();
-        long usable = max - total + free;
-
-        System.out.println("最大内存 = " + max);
-        System.out.println("已分配内存 = " + total);
-        System.out.println("已分配内存中的剩余空间 = " + free);
-        System.out.println("最大可用内存 = " + usable);
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        MemoryUsedTest javaHeapTest = new MemoryUsedTest(150, true);
+        System.out.println("Holding  " + javaHeapTest.getMemorySize()+" MB string, and some things~ ");
 
         while (true) {
             System.out.println("sleeping...");
