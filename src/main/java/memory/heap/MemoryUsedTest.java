@@ -78,8 +78,8 @@ public class MemoryUsedTest {
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        MemoryUsedTest javaHeapTest = new MemoryUsedTest(150, true);
-        System.out.println("Holding  " + javaHeapTest.getMemorySize()+" MB string, and some things~ ");
+        MemoryUsedTest javaHeapTest = new MemoryUsedTest(300, true);
+        System.out.println("Holding  " + javaHeapTest.getMemorySize()+" MB char, and some things~ ");
 
         while (true) {
             System.out.println("sleeping...");
